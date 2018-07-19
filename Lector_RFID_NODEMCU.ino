@@ -6,7 +6,6 @@
        D7           GPIO-13     //     SPI MOSI MOSI
        D6           GPIO-12     //     SPI MISO MISO
        D5           GPIO-14     //     SPI SCK SCK       
-
 /////////////////////////////////////////////////////////////////////*/
 
 
@@ -18,42 +17,58 @@
 #define LED        D1
 
 MFRC522 mfrc522(SS_PIN, RST_PIN); 
- String contenido= "";
- byte letra;
 
-void setup() { 
-              Serial.begin(9600);   
-              SPI.begin();     
-              mfrc522.PCD_Init();   
-              Serial.println("Aproxime su tarjeta al Lector...");
-              Serial.println();
-              digitalWrite(D1,LOW);
-              pinMode(D1, OUTPUT); 
-             } // FIN SETUP
+void setup(){
+                Serial.begin(9600);   
+                SPI.begin();      
+                mfrc522.PCD_Init();   
+               Serial.println("Aproxime La Tarjeta al Lector...");
+               Serial.println();
+               digitalWrite(D1,LOW);
+                pinMode(D1, OUTPUT);
+            }// FIN SETUP
 
-void loop() {   if (mfrc522.PICC_IsNewCardPresent()) {
-                if (mfrc522.PICC_ReadCardSerial()) {
-                                                    Serial.print("Numero de Tarjeta :");
-                                                    printArray(mfrc522.uid.uidByte, mfrc522.uid.size);
-                                                    Serial.println();
-                                                    mfrc522.PICC_HaltA();
-                                                   }
-                                                    }
-              delay(250);
-              }// FIN LOOP
+void loop(){ 
+     
+      if (mfrc522.PICC_IsNewCardPresent()){if (mfrc522.PICC_ReadCardSerial()) { manejo_tarjeta();  } }
+      
+      } //FIN LOOP
+      
+    
+void manejo_tarjeta(){
+                      String contenido= "";
+                      Serial.print("Codigo de Tarjeta :");
+                      for (byte i = 0; i < mfrc522.uid.size; i++) {
+                                                                    Serial.print(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " ");
+                                                                    Serial.print(mfrc522.uid.uidByte[i], HEX);
+                                                                    contenido.concat(String(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " "));
+                                                                    contenido.concat(String(mfrc522.uid.uidByte[i], HEX));
+                                                                  }
+                   Serial.println();
+                   Serial.print("Mensaje : ");
+                   contenido.toUpperCase();
+                   if (contenido.substring(1) == "XX XX XX XX" ||
+                       contenido.substring(1) == "XX XX XX XX" ) {
+                                                  Serial.println("Abiertoo--------------- Bienvenido !!!!");
+                                                  Serial.println();
+                                                  digitalWrite(D1, HIGH);    
+                                                  delay(1000);             
+                                                  digitalWrite(D1, LOW); 
+                                                                } 
+                   else{
+                         Serial.println("Juiira Gatooo");
+                         Serial.println();             
+                         digitalWrite(D1, HIGH);
+                         delay(100);           
+                         digitalWrite(D1, LOW); 
+                         delay(100);
+                         digitalWrite(D1, HIGH);
+                         delay(100);           
+                         digitalWrite(D1, LOW); 
+                         delay(100);
+                         digitalWrite(D1, HIGH);
+                         delay(100);           
+                         digitalWrite(D1, LOW); 
+                        }
 
-
-
-void printArray(byte *buffer, byte bufferSize) {
-                                                
-                                                 for (byte i = 0; i < bufferSize; i++) {
-                                                                                        Serial.print(buffer[i] < 0x10 ? " 0" : " ");
-                                                                                        Serial.print(buffer[i], HEX);
-                                                                                        contenido.concat(String(mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " "));
-                                                                                        contenido.concat(String(mfrc522.uid.uidByte[i], HEX));
-                                                                                        contenido.toUpperCase();
-                                            }
-                        } //FIN PRINT ARRAY
-
-
-
+}   // FIN MANEJO TARJETA
