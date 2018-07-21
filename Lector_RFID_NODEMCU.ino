@@ -14,7 +14,7 @@
 
 #define RST_PIN    D3    
 #define SS_PIN     D8   
-#define LED        D1
+#define LED_RFID   D1
 
 MFRC522 mfrc522(SS_PIN, RST_PIN); 
 
@@ -24,8 +24,8 @@ void setup(){
                 mfrc522.PCD_Init();   
                Serial.println("Aproxime La Tarjeta al Lector...");
                Serial.println();
-               digitalWrite(D1,LOW);
-                pinMode(D1, OUTPUT);
+               digitalWrite(LED_RFID,LOW);
+                pinMode(LED_RFID, OUTPUT);
             }// FIN SETUP
 
 void loop(){ 
@@ -51,24 +51,24 @@ void manejo_tarjeta(){
                        contenido.substring(1) == "XX XX XX XX" ) {
                                                   Serial.println("Abiertoo--------------- Bienvenido !!!!");
                                                   Serial.println();
-                                                  digitalWrite(D1, HIGH);    
+                                                  digitalWrite(LED_RFID, HIGH);    
                                                   delay(1000);             
-                                                  digitalWrite(D1, LOW); 
+                                                  digitalWrite(LED_RFID, LOW); 
                                                                 } 
                    else{
                          Serial.println("Juiira Gatooo");
                          Serial.println();             
-                         digitalWrite(D1, HIGH);
+                         digitalWrite(LED_RFID, HIGH);
                          delay(100);           
-                         digitalWrite(D1, LOW); 
+                         digitalWrite(LED_RFID, LOW); 
                          delay(100);
-                         digitalWrite(D1, HIGH);
+                         digitalWrite(LED_RFID, HIGH);
                          delay(100);           
-                         digitalWrite(D1, LOW); 
+                         digitalWrite(LED_RFID, LOW); 
                          delay(100);
-                         digitalWrite(D1, HIGH);
+                         digitalWrite(LED_RFID, HIGH);
                          delay(100);           
-                         digitalWrite(D1, LOW); 
+                         digitalWrite(LED_RFID, LOW); 
                         }
 
 }   // FIN MANEJO TARJETA
